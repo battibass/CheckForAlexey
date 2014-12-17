@@ -149,6 +149,7 @@ TrkErrorMatricesDumper::beginRun(edm::Run const& run, edm::EventSetup const& con
 	  align::ID rawId  = errIt->rawId();
 	  CLHEP::HepSymMatrix matrix = errIt->matrix();
 
+	  // CB : for now I put a dump of everything, this can be changed if needed, please consider what to do
 	  std::cout << "[TrkErrorMatricesDumper::Error] ID: "
 		    << rawId << " matrix: " << matrix << std::endl;
 
@@ -171,6 +172,7 @@ TrkErrorMatricesDumper::beginRun(edm::Run const& run, edm::EventSetup const& con
 	  align::ID rawId  = errIt->rawId();
 	  CLHEP::HepSymMatrix matrix = errIt->matrix();
 
+	  // CB : for now I put a dump of everything, this can be changed if needed, please consider what to do
 	  std::cout << "[TrkErrorMatricesDumper::ErrorExtnded] ID: "
 		    << rawId << " matrix: " << matrix << std::endl;
 
@@ -206,12 +208,14 @@ TrkErrorMatricesDumper::beginRun(edm::Run const& run, edm::EventSetup const& con
 
 	   CLHEP::HepSymMatrix errExt = extendedErrorsMap[rawId];
 	   
-	   bool areEquivalent = ( std::abs(err[0][0] - errExt[0][0]) <= std::abs(err[0][0]*1E-3) 
-				  &&  std::abs(err[0][1] - errExt[0][1]) <= std::abs(err[0][1]*1E-3)
-				  &&  std::abs(err[0][2] - errExt[0][2]) <= std::abs(err[0][2]*1E-3)
-				  &&  std::abs(err[1][1] - errExt[1][1]) <= std::abs(err[1][1]*1E-3)
-				  &&  std::abs(err[1][2] - errExt[1][2]) <= std::abs(err[1][2]*1E-3)
-				  &&  std::abs(err[2][2] - errExt[2][2]) <= std::abs(err[2][2]*1E-3) );
+	   // CB : I've set the differences to be smaller equal to 1E-5 times the original value
+	   //      you might need to change/update things here
+	   bool areEquivalent = ( std::abs(err[0][0] - errExt[0][0]) <= std::abs(err[0][0]*1E-5) 
+				  &&  std::abs(err[0][1] - errExt[0][1]) <= std::abs(err[0][1]*1E-5)
+				  &&  std::abs(err[0][2] - errExt[0][2]) <= std::abs(err[0][2]*1E-5)
+				  &&  std::abs(err[1][1] - errExt[1][1]) <= std::abs(err[1][1]*1E-5)
+				  &&  std::abs(err[1][2] - errExt[1][2]) <= std::abs(err[1][2]*1E-5)
+				  &&  std::abs(err[2][2] - errExt[2][2]) <= std::abs(err[2][2]*1E-5) );
 	   
 	   std::cout << "[TrkErrorMatricesDumper::Compare] ID: " 
 		     << rawId << " Comparison is " << (areEquivalent ? "GOOD" : "BAD") << std::endl;
